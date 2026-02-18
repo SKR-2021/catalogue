@@ -25,11 +25,13 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                dir('catalogue') {
-                    sh 'npm install'
+                script {
+                    dir('catalogue') {
+                        sh 'npm install'
+                    }
+                }
             }
         }
-    }
         stage('Deploy') {
         //     input {
         //         message "Should we continue?"
