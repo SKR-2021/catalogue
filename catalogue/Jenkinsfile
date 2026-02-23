@@ -35,7 +35,7 @@ pipeline {
                 }
             }
         }
-        stage('Unit test') {
+        stage('Unit Test') {
             steps {
                 script {
                     dir('catalogue') {
