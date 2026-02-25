@@ -96,15 +96,15 @@ resource "aws_route53_record" "jenkins" {
   allow_overwrite = true
 }
 
-# resource "aws_route53_record" "sonar" {
-#   count = var.sonar ? 1 : 0
-#   zone_id = var.zone_id
-#   name    = "sonar.${var.zone_name}"
-#   type    = "A"
-#   ttl     = 1
-#   records = [aws_instance.sonar[0].public_ip]
-#   allow_overwrite = true
-# }
+resource "aws_route53_record" "sonar" {
+  count = var.sonar ? 1 : 0
+  zone_id = var.zone_id
+  name    = "sonar.${var.zone_name}"
+  type    = "A"
+  ttl     = 1
+  records = [aws_instance.sonar[0].public_ip]
+  allow_overwrite = true
+}
 
 resource "aws_route53_record" "jenkins-agent" {
   zone_id         = var.zone_id
