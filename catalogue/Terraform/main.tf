@@ -39,25 +39,25 @@ resource "aws_instance" "jenkins_agent" {
   )
 }
 
-# resource "aws_instance" "sonar" {
-#   count = var.sonar ? 1 : 0
-#   ami           = local.sonar_ami_id
-#   instance_type = "t3.large"
-#   vpc_security_group_ids = [aws_security_group.main.id]
-#   subnet_id = "subnet-092bafa901a4cc7b4" 
-#   key_name = "daws-86s"
-#   # need more for terraform
-#   root_block_device {
-#     volume_size = 20
-#     volume_type = "gp3" # or "gp2", depending on your preference
-#   }
-#   tags = merge(
-#     local.common_tags,
-#     {
-#         Name = "${var.project}-${var.environment}-sonar"
-#     }
-#   )
-# }
+resource "aws_instance" "sonar" {
+  count = var.sonar ? 1 : 0
+  ami           = local.sonar_ami_id
+  instance_type = "t3.large"
+  vpc_security_group_ids = [aws_security_group.main.id]
+  subnet_id = "subnet-092bafa901a4cc7b4" 
+  key_name = "aws-key2"
+  # need more for terraform
+  root_block_device {
+    volume_size = 20
+    volume_type = "gp3" # or "gp2", depending on your preference
+  }
+  tags = merge(
+    local.common_tags,
+    {
+        Name = "${var.project}-${var.environment}-sonar"
+    }
+  )
+}
 
 resource "aws_security_group" "main" {
   name        = "${var.project}-${var.environment}-jenkins"
