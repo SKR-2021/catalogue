@@ -15,7 +15,7 @@ pipeline {
         timeout(time: 10, unit: 'MINUTES') 
         disableConcurrentBuilds()
     }
-    // This is build pipeline
+    //This is build pipeline
     stages {
         stage('Read Version') {
             steps {
@@ -67,13 +67,16 @@ pipeline {
         //     }
         // }
         stage('Dependabot Security Gate') {
+
             environment {
                 GITHUB_OWNER = 'SKR-2021'
                 GITHUB_REPO  = 'catalogue'
                 GITHUB_API   = 'https://api.github.com'
             }
+
             steps {
                 withCredentials([string(credentialsId: 'github-dependabot-token', variable: 'GITHUB_TOKEN')]) {
+
                     sh '''
                         echo "Fetching Dependabot alerts..."
 
@@ -104,7 +107,7 @@ pipeline {
                 }
             }
         }
-
+    
         // ✅ Corrected: Build Image stage was outside `stages {}` block. Moved inside.
         stage('Build Image') {
             steps {
