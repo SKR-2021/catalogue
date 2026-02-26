@@ -15,7 +15,7 @@ pipeline {
         timeout(time: 10, unit: 'MINUTES') 
         disableConcurrentBuilds()
     }
-    // This is build pipeline
+    //This is build pipeline
     stages {
         stage('Read Version') {
             steps {
@@ -67,13 +67,16 @@ pipeline {
         //     }
         // }
         stage('Dependabot Security Gate') {
+
             environment {
                 GITHUB_OWNER = 'SKR-2021'
                 GITHUB_REPO  = 'catalogue'
                 GITHUB_API   = 'https://api.github.com'
             }
+
             steps {
                 withCredentials([string(credentialsId: 'github-dependabot-token', variable: 'GITHUB_TOKEN')]) {
+
                     sh '''
                         echo "Fetching Dependabot alerts..."
 
@@ -104,25 +107,23 @@ pipeline {
                 }
             }
         }
-
-        // ✅ Corrected: Build Image stage was outside `stages {}` block. Moved inside.
+    }
         stage('Build Image') {
             steps {
                 script {
                     withAWS(region:'us-east-1',credentials:'aws-creds') {
-                        dir('catalogue') {
+                         dir('catalogue') {
                             sh """
                                 aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com
                                 docker build -t ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${appVersion} .
                                 docker images
                                 docker push ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${appVersion}
                             """                    
-                        }
-                    }
-                }
+                }       }
+
             }
         }
-    } // End of stages
+    }
     post {
         always {
             echo 'I will always say Hello again!'
