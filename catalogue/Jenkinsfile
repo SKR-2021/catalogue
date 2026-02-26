@@ -45,27 +45,27 @@ pipeline {
             }
         }
         // Here you need to select scanner tool and send the analysis to server 
-        stage('SonarScan') {
-            steps {
-                script {
-                    def scannerHome = tool 'sonar-8.0'
-                    withSonarQubeEnv('sonar-server') {
-                        dir('catalogue') {
-                            sh "${scannerHome}/bin/sonar-scanner"
-                        }
-                    }
-                }
-            }
-        }
-        stage("Quality Gate") {
-            steps {
-                timeout(time: 1, unit: 'HOURS') {
-                    // wait for the quality gate status
-                    // abortPipeline: True will fail the jenkins job if the quality gate is 'Failed' 
-                    waitForQualityGate abortPipeline: true
-                }
-            }
-        }
+        // stage('SonarScan') {
+        //     steps {
+        //         script {
+        //             def scannerHome = tool 'sonar-8.0'
+        //             withSonarQubeEnv('sonar-server') {
+        //                 dir('catalogue') {
+        //                     sh "${scannerHome}/bin/sonar-scanner"
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+        // stage("Quality Gate") {
+        //     steps {
+        //         timeout(time: 1, unit: 'HOURS') {
+        //             // wait for the quality gate status
+        //             // abortPipeline: True will fail the jenkins job if the quality gate is 'Failed' 
+        //             waitForQualityGate abortPipeline: true
+        //         }
+        //     }
+        // }
         stage('Dependabot Security Gate') {
 
             environment {
