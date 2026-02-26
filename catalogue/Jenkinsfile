@@ -71,7 +71,7 @@ pipeline {
             environment {
                 GITHUB_OWNER = 'SKR-2021'
                 GITHUB_REPO  = 'catalogue'
-                GITHUB_API   = 'https://api.github.com/repos/SKR-2021/catalogue/dependabot/alerts'
+                GITHUB_API   = 'https://api.github.com'
             }
 
             steps {
@@ -81,7 +81,7 @@ pipeline {
                         echo "Fetching Dependabot alerts..."
 
                         response=$(curl -s \
-                            -H "Authorization: token $GITHUB_TOKEN" \
+                            -H "Authorization: Bearer $GITHUB_TOKEN" \
                             -H "Accept: application/vnd.github+json" \
                             "$GITHUB_API/repos/$GITHUB_OWNER/$GITHUB_REPO/dependabot/alerts?per_page=100")
 
@@ -99,16 +99,6 @@ pipeline {
 
                         if [ "$high_critical_open_count" -gt 0 ]; then
                             echo "❌ Blocking pipeline due to OPEN HIGH/CRITICAL Dependabot alerts"
-                            echo "Affected dependencies:"
-
-                            echo "$response" | jq -r '.[] 
-                                | select(
-                                    .state == "open" and
-                                    (.security_advisory.severity == "high" 
-                                    or .security_advisory.severity == "critical")
-                                )
-                                | "Dependency: \(.dependency.package.name) | Severity: \(.security_advisory.severity) | Advisory: \(.security_advisory.summary)"'
-
                             exit 1
                         else
                             echo "✅ No OPEN HIGH/CRITICAL Dependabot alerts found"
