@@ -75,7 +75,7 @@ pipeline {
             }
 
             steps {
-                withCredentials([string(credentialsId: 'github-dependabot-token', variable: 'GITHUB_TOKEN')]) {
+                withCredentials([string(credentialsId: 'github-dependabot', variable: 'GITHUB_TOKEN')]) {
 
                     sh '''
                         echo "Fetching Dependabot alerts..."
