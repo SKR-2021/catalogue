@@ -116,7 +116,7 @@ pipeline {
                     }
                 }
     
-        // ✅ Corrected: Build Image stage was outside `stages {}` block. Moved inside.
+        // Corrected: Build Image stage was outside `stages {}` block. Moved inside.
         stage('Build Image') {
             steps {
                 script {
@@ -133,6 +133,23 @@ pipeline {
                 }
             }
         }
+        stage('Trivy Scan') {
+            steps {
+                script {
+                    sh """
+                        trivy image \
+                        --scanners vuln \
+                        --severity HIGH,CRITICAL,MEDIUM \
+                        --pkg-types os \
+                        --exit-code 1 \
+                        --format table \
+                        ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${appVersion}
+                    """
+                
+                }
+            }
+        }
+
     } // End of stages
     post {
         always {
