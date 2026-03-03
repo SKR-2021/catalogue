@@ -18,6 +18,6 @@ variable "zone_id" {
   description = "description"
 }
 
-variable "sonar" {
-  default = true
-}
+# variable "sonar" {
+#   default = true
+# }
