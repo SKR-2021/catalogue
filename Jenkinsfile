@@ -7,9 +7,11 @@ def configMap = [
 
 // If branch is not equal to main, then run CI Pipeline 
 if ( ! env.BRANCH_NAME.equalsIgnoreCase('main') ){
-    nodeJsEksPipeline(configMap)
+    nodeJSEKSpiPeline(configMap)
 
 }
 else {
     echo "Please follow the CR Process"
 }
+
+// Above script will not change only component or project can changed
