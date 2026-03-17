@@ -14,4 +14,4 @@ else {
     echo "Please follow the CR Process"
 }
 
-// Above script will not change only component or project can changed
+// Above script will not change, only components or project can changed
